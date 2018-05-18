@@ -1,0 +1,5 @@
+js in file db: https://github.com/typicode/lowdb
+py in file db: 
+	1. http://tinydb.readthedocs.io/en/latest/intro.html#why-use-tinydb
+	2. https://pythonhosted.org/pickleDB/
+	3. https://docs.python.org/3/library/shelve.html

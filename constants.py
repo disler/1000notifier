@@ -1,0 +1,9 @@
+API_BINANCE_ROOT = "https://api.binance.com"
+API_BINANCE_PING = API_BINANCE_ROOT + "/api/v1/ping"
+API_BINANCE_TIME = API_BINANCE_ROOT + "/api/v1/time"
+API_BINANCE_EXCHANGE_INFO = API_BINANCE_ROOT + "/api/v1/exchangeInfo"
+API_BINANCE_ORDER_BOOK = API_BINANCE_ROOT + "/api/v1/depth"
+API_BINANCE_RECENT_TRADES = API_BINANCE_ROOT + "/api/v1/trades"
+API_BINANCE_CANDLESTICK = API_BINANCE_ROOT + "/api/v1/klines"
+LOG_FILE_PATH = "./feedback/"
+CANDLE_STICK_INTERVALS = ["1m", "3m", "5m", "15m", "30m", "1h", "2h", "4h", "6h", "8h", "12h", "1d", "3d", "1w", "1M"]
