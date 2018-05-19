@@ -1,3 +1,4 @@
+binance api: https://github.com/binance-exchange/binance-official-api-docs/blob/master/rest-api.md
 js in file db: https://github.com/typicode/lowdb
 py in file db: 
 	1. http://tinydb.readthedocs.io/en/latest/intro.html#why-use-tinydb

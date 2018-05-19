@@ -13,6 +13,9 @@ name = "pypi"
 
 requests = "*"
 pprint = "*"
+plotly = "*"
+numpy = "*"
+"789eb24" = {path = ".\\\\TA_Lib-0.4.17-cp27-cp27m-win32.whl"}
 
 
 [requires]
