@@ -14,6 +14,7 @@ response = network.api.candles("ZRXBTC", "30m", dtStart, dtEnd)
 
 transformed = transforms.candles_single_array_to_type_array(response)
 
-transformedWithSMA = indicators.sma(transformed, 15)
+transformed = indicators.ema(transformed, 10)
+transformed = indicators.ema(transformed, 21)
 
-charting.simple_candle(transformedWithSMA)
+charting.simple_candle(transformed)

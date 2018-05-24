@@ -20,6 +20,6 @@ def sma(oData, period):
 def ema(oData, period):
 	''' attach the ema '''
 	
-	oData['EMA_'+period] = talib.EMA(safeNumpyGet(oData, 'close'), period)
+	oData['EMA_'+str(period)] = talib.EMA(safeNumpyGet(oData, 'close'), period)
 
 	return oData

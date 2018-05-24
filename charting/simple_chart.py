@@ -8,6 +8,60 @@ import plotly.graph_objs as go
 from datetime import datetime
 from logger.logger import log
 
+def add_to_trace_if_exist(oData, indicator):
+	''' return a list to be combined with previous traes -> append traces given the indicator exists '''
+
+	if indicator not in oData:
+		log("indicator {} not in oData keys: {}".format(indicator, oData.keys()))
+		return []
+
+	oTrace = {}
+
+	# Simple moving average
+	if indicator == 'SMA':
+		if type(list(oData[indicator])) == list:
+			oTrace = dict(
+				type="scatter",
+				x=oData['date'],
+				y=oData[indicator],
+				mode="lines",
+				line = dict( width = 1 ),
+				marker = dict( color = '#E377C2' ),
+				yaxis = 'y2',
+				name='Moving Average' 
+			)
+
+	# exponential moving average 10
+	elif indicator == 'EMA_10':
+		if type(list(oData[indicator])):
+			oTrace = dict(
+				type="scatter",
+				x=oData['date'],
+				y=oData[indicator],
+				mode="lines",
+				line = dict( width = 2 ),
+				marker = dict( color = '#d18f4d' ),
+				yaxis = 'y2',
+				name='Exponential Moving Average (10)' 
+			)
+
+	# exponential moving average 21
+	elif indicator == 'EMA_21':
+		if type(list(oData[indicator])):
+			oTrace = dict(
+				type="scatter",
+				x=oData['date'],
+				y=oData[indicator],
+				mode="lines",
+				line = dict( width = 2 ),
+				marker = dict( color = '#72d1d8' ),
+				yaxis = 'y2',
+				name='Exponential Moving Average (21)' 
+			)
+
+	return [oTrace]
+
+
 
 def simple_candle(oData):
 	'''
@@ -71,21 +125,10 @@ def simple_candle(oData):
 		y=volume,
 	)
 
-	# add on indicators
-	if type(list(sma)) == list:
-		oSMA = dict(
-			type="scatter",
-			x=date,
-			y=sma,
-			mode="lines",
-			line = dict( width = 2 ),
-			marker = dict( color = '#E377C2' ),
-			yaxis = 'y2',
-			name='Moving Average' 
-		)
-
-		data.append(oSMA)
-
+	data = data + add_to_trace_if_exist(oData, 'SMA')
+	data = data + add_to_trace_if_exist(oData, 'EMA_' + str(10))
+	data = data + add_to_trace_if_exist(oData, 'EMA_' + str(21))
+	
 	data.append(oCandleData)
 	data.append(oVolumeData)
 
