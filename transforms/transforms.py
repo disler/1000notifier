@@ -50,15 +50,16 @@ def candles_single_array_to_type_array(candles):
 	lstClose = []
 	lstVolume = []
 	lstIndex = []
+	lstUpOrDown = []
 
 	for _index, _lstCandle in enumerate(candles):
 
 		_dtOpen = type_conversion.longToDate(_lstCandle[0])
-		_open = _lstCandle[1]
-		_high = _lstCandle[2]
-		_low = _lstCandle[3]
-		_close = _lstCandle[4]
-		_volume = _lstCandle[5]
+		_open = float(_lstCandle[1])
+		_high = float(_lstCandle[2])
+		_low = float(_lstCandle[3])
+		_close = float(_lstCandle[4])
+		_volume = float(_lstCandle[5])
 
 		lstDate.append(_dtOpen)
 		lstOpen.append(_open)
@@ -68,6 +69,17 @@ def candles_single_array_to_type_array(candles):
 		lstVolume.append(_volume)
 		lstIndex.append(_index)
 
+	# calculate increased/stay/decreased
+	for _index in lstIndex:
+		_close = lstClose[_index]
+		_open = lstOpen[_index]
+		if _close > _open:
+			lstUpOrDown.append("up")
+		elif _close == _open:
+			lstUpOrDown.append("steady")
+		else:
+			lstUpOrDown.append("down")
+
 	oTransformed = {
 		"date": lstDate,
 		"open": lstOpen,
@@ -76,6 +88,7 @@ def candles_single_array_to_type_array(candles):
 		"close": lstClose,
 		"volume": lstVolume,
 		"index": lstIndex,
+		'up_or_down': lstUpOrDown
 	}
 
 	log("completed data transform -> {}".format(oTransformed))

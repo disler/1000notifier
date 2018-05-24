@@ -3,18 +3,17 @@ import network.api
 import pprint
 from any.type_conversion import longToDate as dt, dateToLong as dtl
 import datetime
-import transforms.transforms as transforms
+from transforms import transforms, indicators
 import charting.simple_chart as charting
-import talib
+from any.date_helpers import date_range
 
 
-dtStart = datetime.datetime.now() - datetime.timedelta(days=1)
-dtEnd = datetime.datetime.now() - datetime.timedelta()
+dtStart, dtEnd = date_range("days", 2, None, None)
 
-response = network.api.candles("ZRXBTC", "15m", dtStart, dtEnd)
-print pprint.pformat(response)
+response = network.api.candles("ZRXBTC", "30m", dtStart, dtEnd)
 
 transformed = transforms.candles_single_array_to_type_array(response)
-print pprint.pformat(transformed)
 
-charting.simple_candle(transformed)
+transformedWithSMA = indicators.sma(transformed, 15)
+
+charting.simple_candle(transformedWithSMA)
