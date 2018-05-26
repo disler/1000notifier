@@ -1,1 +1,1 @@
-test talib by building 'sma' indicator - we'll need these indicators to spot and notifiy for price increases
+create simple strategy and backtest with data

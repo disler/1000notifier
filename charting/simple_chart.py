@@ -4,7 +4,7 @@
 
 import plotly
 import plotly.graph_objs as go
-
+from any.data_conversion import up_down_to_colors
 from datetime import datetime
 from logger.logger import log
 
@@ -61,7 +61,62 @@ def add_to_trace_if_exist(oData, indicator):
 
 	return [oTrace]
 
+def simple_volume_bar(oData):
+	'''
+		create a simple bar chart
 
+		requires oData to be {
+			date:dt[]|str[],
+			volume:int[]
+		}
+	'''
+	date = oData.get('date', False)
+	volume = oData.get('volume', False)
+	colors = up_down_to_colors(oData.get('up_or_down'))
+
+	assert date and len(date) > 0, "Required field oData[date] is missing"
+	assert volume and len(volume) > 0, "Required field oData[volume] is missing"
+	assert colors and len(colors) > 0, "Required field oData[up_or_down] is missing"
+
+	traces = []
+	layout = {}
+
+	oVolumeData = dict(
+		type="bar",
+		x=date,
+		y=volume,
+		marker = dict( color = colors ),
+		yaxis="y"
+	)
+
+	traces.append(oVolumeData)
+
+	chart = dict(data=traces, layout=layout)
+
+	plotly.offline.plot(chart, filename="simple_volume_bar.html")
+
+def build_annotations_from_notifications(notifications):
+	''' from a list of structures:notification:Notifications() create an annotation to display the event of importance '''
+	
+	annotations = []
+
+	for _notification in notifications:
+		
+		annotation = dict(
+            x=_notification.date,
+            y=_notification.close,
+            yref='y2',
+            text=_notification.strategy,
+			hovertext=_notification.notification
+            #showarrow=True,
+            #arrowhead=7,
+            #ax=0,
+            #ay=-40
+        )
+
+		annotations.append(annotation)
+
+	return annotations
 
 def simple_candle(oData):
 	'''
@@ -86,7 +141,8 @@ def simple_candle(oData):
 	index = oData.get('index', False)
 	sma = oData.get('SMA', False)
 	up_or_down = oData.get('up_or_down')
-	colors = ["#aFa" if _step == 'up' else "#Faa" for _step in up_or_down]
+	colors = up_down_to_colors(up_or_down) 
+	notifications = oData.get('notification', [])
 
 	assert date and len(date) > 0, "Required field oData[date] is missing"
 	assert open and len(open) > 0, "Required field oData[open] is missing"
@@ -128,21 +184,27 @@ def simple_candle(oData):
 	data = data + add_to_trace_if_exist(oData, 'SMA')
 	data = data + add_to_trace_if_exist(oData, 'EMA_' + str(10))
 	data = data + add_to_trace_if_exist(oData, 'EMA_' + str(21))
+
+	notification_annotations = build_annotations_from_notifications(notifications)
+
+	log("notification_annotations: {}".format(notification_annotations))
 	
 	data.append(oCandleData)
 	data.append(oVolumeData)
 
-	layout['plot_bgcolor'] = 'rgb(0, 0, 0)'
+	layout['title'] = oData.get('title', 'Default Title')
+	layout['annotations'] = notification_annotations
 	layout['xaxis'] = dict( rangeselector = dict( visible = True ) )
-	layout['yaxis'] = dict( domain = [0, 0.2], showticklabels = True )
-	layout['yaxis2'] = dict( domain = [0.2, 1] )
+	layout['yaxis'] = dict( domain = [0, 0.4], showticklabels = True )
+	layout['yaxis2'] = dict( domain = [0.4, 1] )
+	#layout['plot_bgcolor'] = 'rgb(0, 0, 0)'
 	#layout['legend'] = dict( orientation = 'h', y=0.9, x=0.3, yanchor='bottom' )
 	#layout['margin'] = dict( t=40, b=40, r=40, l=40 )
 
 	figure = dict(data=data, layout=layout)
 
 
-	plotly.offline.plot(figure, filename='simple_candlestick.html')
+	plotly.offline.plot(figure, filename=oData.get('file_name', 'default_file_name.html'))
 
 
 
