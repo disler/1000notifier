@@ -11,3 +11,20 @@ DATE_DELTA_TYPES = ["minutes", "hours", "days", "weeks", "months"]
 POSITIVE_COLOR = "#aFa"
 NEGATIVE_COLOR ="#Faa"
 STRATEGY_VOLUME_CHANGE = "volume_change"
+CANDLE_STICK_INTERVAL_TO_TIME_TUPLE = {
+	"1m": (1, 'minutes'),
+	"3m": (3, 'minutes'),
+	"5m": (5, 'minutes'),
+	"15m": (15, 'minutes'),
+	"30m": (30, 'minutes'),
+	"1h": (1, 'hours'),
+	"2h": (2, 'hours'),
+	"4h": (4, 'hours'),
+	"6h": (6, 'hours'),
+	"8h": (8, 'hours'),
+	"12h": (12, 'hours'),
+	"1d": (1, 'days'),
+	"3d": (3, 'days'),
+	"1w": (1, 'weeks'),
+	"1M": (4.34524, 'weeks'),
+}

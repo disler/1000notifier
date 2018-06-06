@@ -1,1 +1,2 @@
-create simple strategy and backtest with data
+get volume strategy running with live data - send alerts via telegram (could be anything) (send chart)
+implement a viable strategy (macd cross)

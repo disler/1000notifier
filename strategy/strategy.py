@@ -2,9 +2,29 @@
 	Contains strategies for predicting market shifts
 '''
 from structures.notification import Notification
-
 from logger.logger import log
 import constants
+import inspect
+
+def create_strategy_instance(strategy, strategyArgs):
+	''' generates a strategy '''
+
+	# get our strategy
+	lstStrategies = inspect.getmembers(__import__(__name__), predicate=inspect.isclass)
+	print lstStrategies
+	oMapStrategyNameToStrategyClass = {_tuple[0]:_tuple[1] for _tuple in lstStrategies if "Strategy" in _tuple[0]}
+	clsStrategy = oMapStrategyNameToStrategyClass.get(strategy, False)
+
+	# existance check
+	if clsStrategy == False:
+		error = 'strategy {} does not exist available options are {}'.format(strategy, oMapStrategyNameToStrategyClass)
+		log(error)
+		raise Exception(error)
+
+	instStrategy = clsStrategy()
+	instStrategy.setArgs(strategyArgs)
+
+	return instStrategy
 
 class StrategyVolumeChange(object):
 	'''

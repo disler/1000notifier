@@ -10,26 +10,51 @@ import network.api
 import constants as constants
 import charting.simple_chart as charting
 
-# base variables
-pair = "ZRXBTC"
-period = "15m"
-dtStart, dtEnd = date_range("days", 2, None, None)
-
-# query for candles
-response = network.api.candles(pair, period, dtStart, dtEnd)
-
-transformed = transforms.candles_single_array_to_type_array(response)
+from live import live
 
 
-title = generate_title(pair, period, dtStart, dtEnd)
-transformed = generic.set(transformed, 'title', title)
-transformed = generic.set(transformed, 'file_name', 'simple_chart.html')
+notifier = live.LiveNotifier('ZRXBTC', '1m', "StrategyVolumeChange", {"increase_ratio": 1.5})
 
-backtested = backtest.backtest(transformed, 'StrategyVolumeChange', {'increase_ratio': 2.0})
 
-charting.simple_candle(backtested)
+
+
+
+
+
+
+def backtest_test():
+	# base variables
+	pair = "ZRXBTC"
+	period = "15m"
+	dtStart, dtEnd = date_range("days", 2, None, None)
+
+	# query for candles
+	response = network.api.candles(pair, period, dtStart, dtEnd)
+
+	transformed = transforms.candles_single_array_to_type_array(response)
+
+
+	title = generate_title(pair, period, dtStart, dtEnd)
+	transformed = generic.set(transformed, 'title', title)
+	transformed = generic.set(transformed, 'file_name', 'simple_chart.html')
+
+	backtested = backtest.backtest(transformed, 'StrategyVolumeChange', {'increase_ratio': 2.0})
+
+	charting.simple_candle(backtested)
+
+
 
 def chart_tests():
+	# base variables
+	pair = "ZRXBTC"
+	period = "15m"
+	dtStart, dtEnd = date_range("days", 2, None, None)
+
+	# query for candles
+	response = network.api.candles(pair, period, dtStart, dtEnd)
+
+	transformed = transforms.candles_single_array_to_type_array(response)
+
 	title = generate_title(pair, period, dtStart, dtEnd)
 
 	# convert data and setup additional params
