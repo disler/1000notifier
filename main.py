@@ -9,12 +9,13 @@ import datetime
 import network.api
 import constants as constants
 import charting.simple_chart as charting
-
+from notifier import to_log
 from live import live
 
 
 notifier = live.LiveNotifier('ZRXBTC', '1m', "StrategyVolumeChange", {"increase_ratio": 1.5})
-
+notifier.set_notifier(to_log.notify)
+notifier.run()
 
 
 

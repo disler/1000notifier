@@ -10,9 +10,6 @@ def backtest(oData, sStrategy, strategyArgs={}):
 	# create an instance of the strategy that we want 
 	instStrategy = strategy.create_strategy_instance(sStrategy, strategyArgs)
 
-	# create a new location for strategy reports/notification
-	oData['notification'] = []
-
 	for _index in oData['index']:
 		oData = instStrategy.strategy(oData, _index)
 

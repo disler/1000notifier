@@ -1,11 +1,6 @@
 import inspect
 import sys
-class DefTest():
-	def test(self):
-		return 'WOW!'
+from strategy import strategy
 
-def getClasses():
-	clsmembers = inspect.getmembers(__import__(__name__), inspect.isclass)
-	return clsmembers
 
-print getClasses()
+inst = strategy.create_strategy_instance("StrategyVolumeChange", {'increase_ratio': 1.5})

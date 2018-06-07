@@ -28,3 +28,9 @@ CANDLE_STICK_INTERVAL_TO_TIME_TUPLE = {
 	"1w": (1, 'weeks'),
 	"1M": (4.34524, 'weeks'),
 }
+
+# add one second of delay
+WAIT_TIME_LOOP_PADDING = 1
+
+# how many candles to look back during live loop - if the time is right this only needs to be 1, since we'll only query 1 new candle every interval
+LIVE_CANDLE_LOOP_BACKTRACK = 5

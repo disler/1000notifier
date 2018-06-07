@@ -73,12 +73,8 @@ def candles_single_array_to_type_array(candles):
 	for _index in lstIndex:
 		_close = lstClose[_index]
 		_open = lstOpen[_index]
-		if _close > _open:
-			lstUpOrDown.append("up")
-		elif _close == _open:
-			lstUpOrDown.append("steady")
-		else:
-			lstUpOrDown.append("down")
+		upOrDown = _determine_up_or_down(_open, _close)
+		lstUpOrDown.append(upOrDown)
 
 	oTransformed = {
 		"date": lstDate,
@@ -89,8 +85,55 @@ def candles_single_array_to_type_array(candles):
 		"volume": lstVolume,
 		"index": lstIndex,
 		'up_or_down': lstUpOrDown
+
+		# notification list starts empty
+		'notification': []
 	}
 
 	log("completed data transform -> {}".format(oTransformed))
 
 	return oTransformed
+
+def add_many_candles_to_transformed(transformed, candles, startingIndex):
+	''' converts several candles into the transformemd list '''
+
+	# run candle transform for each candle
+	for index, _candle in enumerate(candles):
+		transformed = add_candle_to_transformed(transformed, _candle, index + startingIndex)
+
+	return transformed
+
+def add_candle_to_transformed(transformed, candle, index):
+	''' convert a single candle into the transformed list '''
+
+	log('adding candle: {}, at index: {}, to data: \n\n{}\n\n'.format(candle, index, transformed))
+
+	_dtOpen = type_conversion.longToDate(candle[0])
+	_open = float(candle[1])
+	_high = float(candle[2])
+	_low = float(candle[3])
+	_close = float(candle[4])
+	_volume = float(candle[5])
+
+	transformed['date'].append(_dtOpen)
+	transformed['open'].append(_open)
+	transformed['high'].append(_high)
+	transformed['low'].append(_low)
+	transformed['close'].append(_close)
+	transformed['volume'].append(_volume)
+	transformed['index'].append(index)
+
+	return transformed
+
+
+
+
+''' "private" helpers '''
+
+def _determine_up_or_down(open, close):
+	if close > open:
+		return "up"
+	elif close == open:
+		return "steady"
+	else:
+		return "down"

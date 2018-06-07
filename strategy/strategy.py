@@ -5,13 +5,13 @@ from structures.notification import Notification
 from logger.logger import log
 import constants
 import inspect
+import sys
 
 def create_strategy_instance(strategy, strategyArgs):
 	''' generates a strategy '''
-
+	print 'sys.modules[__name__]', sys.modules[__name__]
 	# get our strategy
-	lstStrategies = inspect.getmembers(__import__(__name__), predicate=inspect.isclass)
-	print lstStrategies
+	lstStrategies = inspect.getmembers(sys.modules[__name__], predicate=inspect.isclass)
 	oMapStrategyNameToStrategyClass = {_tuple[0]:_tuple[1] for _tuple in lstStrategies if "Strategy" in _tuple[0]}
 	clsStrategy = oMapStrategyNameToStrategyClass.get(strategy, False)
 
